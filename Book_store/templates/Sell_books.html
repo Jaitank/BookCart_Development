@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+Sell Books
+
+{% endblock %}
+
+
+
+{% block content %}
+
+
+
+<section class="text-gray-600 body-font">
+  <form action="" method="POST" class="form-register" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    <div class="container px-5 py-24 mx-auto flex flex-row items-center">
+
+      <!-- <div class="container item-centre w-1/3 border-1 border-black bg-white lg:w-3/5 md:w-1/2 md:pr-16 lg:pr-0 pr-0">
+        <h1 class="font-bold mb-3 ">Instructions :</h1>
+          <li class="mb-2">Properly giving name to book can present you in top in search</li>
+          <li class="mb-2">Book category is main factor by which you can sell in structured format of site, you be carefull while filling single bit mistake can make your book down</li>
+          <li class="mb-2">Select mfg Year very carefully, honestly so that return ni aajaye</li>
+          <li class="mb-2">Your Book image name can also affect in you searching of your product</li>
+          <li class="mb-2">Your Book image name can also affect in you searching of your product</li>
+          <li class="mb-2">Your Book image name can also affect in you searching of your product</li>
+          <li class="mb-2">Your Book image name can also affect in you searching of your product</li>
+          <li class="mb-2">Your Book image name can also affect in you searching of your product</li>
+          
+        
+      </div> -->
+
+      <div
+        class="lg:w-1/2 md:w-1/2 bg-gray-100 border-1 shadow rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0 gap-10">
+        <div class="flex flex-row gap-5">
+          <!-- <h2 class="text-gray-900 text-lg font-medium title-font mb-3">ADD BOOK TO SELL</h2> -->
+          <div class="flex flex-col">
+
+
+            <div class=" mb-2">
+              <label for="full-name" class="leading-7 text-sm text-gray-600 font-bold" , id="uname"> {{
+                form.streamName.label() }} </label>
+              {{ form.streamName(class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500
+              focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8
+              transition-colors duration-200 ease-in-out", placeholder= "Select Stream")}}
+            </div>
+
+
+            <div class=" mb-2">
+              <label for="full-name" class="leading-7 text-sm text-gray-600 font-bold"> {{ form.bookname.label() }}
+              </label>
+              {{ form.bookname(class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500
+              focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8
+              transition-colors duration-200 ease-in-out", placeholder= "Enter Book Name :")}}
+            </div>
+
+
+
+
+            <div class=" mb-2">
+              <label for="full-name" class="leading-7 text-sm text-gray-600 font-bold"> {{ form.subjectName.label() }}
+              </label>
+              {{ form.subjectName(class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500
+              focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8
+              transition-colors duration-200 ease-in-out", placeholder= "Physics, Commerce, Competitive Maths, etc.")}}
+            </div>
+
+
+            <div class=" mb-2">
+              <label for="full-name" class="leading-7 text-sm text-gray-600 font-bold"> {{ form.className.label() }}
+              </label>
+              {{ form.className(class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500
+              focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8
+              transition-colors duration-200 ease-in-out", placeholder= "12, 11, if year = 1,2,3,etc.")}}
+            </div>
+
+          </div>
+
+          <div class="flex flex-col border-l-2 px-5">
+
+            <div class=" mb-2">
+              <label for="full-name" class="leading-7 text-sm text-gray-600 font-bold"> {{ form.mfgYear.label() }}
+              </label>
+              {{ form.mfgYear(class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2
+              focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors
+              duration-200 ease-in-out", placeholder= "2020, 2019, 2018...")}}
+            </div>
+
+            <div class=" mb-2">
+              <label for="full-name" class="leading-7 text-sm text-gray-600 font-bold"> {{ form.sellingAmount.label() }}
+              </label>
+              {{ form.sellingAmount(class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500
+              focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8
+              transition-colors duration-200 ease-in-out", placeholder= "In Rupees")}}
+            </div>
+
+            <div class=" mb-2">
+              <label for="full-name" class="leading-7 text-sm text-gray-600 font-bold"> {{ form.publicationName.label()
+                }} </label>
+              {{ form.publicationName(class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500
+              focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8
+              transition-colors duration-200 ease-in-out", placeholder= "NCERT, Arihant, NK..")}}
+            </div>
+
+            <div class=" flex flex-row mb-4">
+              <div class="flex flex-col">
+
+                <label for="full-name" class="leading-7 text-sm text-gray-600 font-bold"> {{ form.bookImage.label() }}
+                  (jpg & png only) </label>
+                {{ form.bookImage(class="w-3/4", placeholder= "Upload Image here")}}
+              </div>
+
+              {{ form.quantity(class="w-1/3 bg-white rounded mt-3 border border-gray-300 focus:border-indigo-500
+              focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1  leading-8
+              transition-colors duration-200 ease-in-out", placeholder= "Quantity")}}
+            </div>
+          </div>
+
+
+        </div>
+
+        {{ form.submit(class="text-white w-full bg-gray-600 border-0 py-2 px-8 focus:outline-none hover:bg-gray-900
+        rounded
+        text-lg ")}}
+      </div>
+    </div>
+
+
+    </div>
+
+    </div>
+
+  </form>
+</section>
+
+{% endblock %}

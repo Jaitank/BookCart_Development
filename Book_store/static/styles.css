@@ -1,0 +1,48 @@
+body {
+    
+    /* background-color: rgb(231, 231, 238); */
+    /* background-color: rgb(243 244 246); */
+    background-color: rgb(251, 244, 244);
+    margin: 0px;
+    padding: 0px;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+}
+
+.navbar{
+    /* background-color: rgb(60, 7, 81); */
+    
+    /* background-color: rgb(243, 227, 238); */
+    color: aliceblue;
+   
+}
+.btn
+{
+    /* border-color: white; */
+    border-color: rgb(60, 2, 60);
+    /* color: white; */
+    color: rgb(91, 88, 91);
+}
+.btn:hover{
+    background-color: rgb(91, 88, 91);
+    /* color: white; */
+    color:rgb(45, 2, 49)
+
+    
+    /* border-color: white; */
+}
+
+.nav-link:hover{
+    background-color: rgb(175, 168, 175);
+    color: white;
+    
+}
+
+.card-img-top{
+    width: 48%;
+}
+
+
+
+

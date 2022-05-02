@@ -1,7 +1,7 @@
 from logging import exception
 from msilib.schema import PublishComponent
 from Book_store import app
-from flask import redirect, render_template, url_for, flash, session
+from flask import redirect, render_template, url_for, flash, session, request
 import random
 
 from Book_store.forms import LoginForm, RegisterFrom, sellingForm
@@ -43,6 +43,22 @@ def home_page():
     result = db.fetchall()
     db.close()
     return render_template('index.html', result = result)
+
+
+@app.route('/result',methods = ["GET","POST"])
+def result():
+    if request.method == 'POST':
+        book = request.form['book']
+        db = mydb.cursor()
+        db.execute(f'select bookName,className,mfgYear,sellingAmount,publicationName, urlImg, quantity, book_id from jee_books where bookName like "%{book}%";')
+        jeeResult = db.fetchall()
+        db.execute(f'select bookName,className,mfgYear,sellingAmount,publicationName, urlImg, quantity, book_id from neet_books where bookName like "%{book}%";')
+        neetResult = db.fetchall()
+        db.execute(f'select bookName,className,mfgYear,sellingAmount,publicationName, urlImg, quantity, book_id from school_books where bookName like "%{book}%";')
+        schoolResult = db.fetchall()
+        db.close()
+        return render_template('result.html', jeeResult = jeeResult, neetResult = neetResult, schoolResult = schoolResult)
+    return redirect(url_for('home_page'))
 
 @app.route('/JEE')
 def jee_page():

@@ -265,3 +265,40 @@ def product_display(product_name_id):
     db.execute(f'select bookName, subjectName, className, mfgYear, sellingAmount, publicationName, sellername, urlImg, quantity  from {used_tb} where book_id = "{book_id}";')
     result = db.fetchone()
     return render_template('PdBook_indPage.html', data = result)
+
+
+
+
+@app.route('/JEE/<string:subject_name>')
+def jee_subjects(subject_name):
+
+    db = mydb.cursor()
+    db.execute(f'select bookName,className,mfgYear,sellingAmount,publicationName, urlImg, quantity, book_id from jee_books where subjectName = "{subject_name}";')
+    result = db.fetchall()
+    db.close()
+    if subject_name == 'Physics':
+        return render_template("JEE/jee-Physics.html",data = result)
+    elif subject_name == 'Chemistry':
+        return render_template("JEE/jee-Chemistry.html",data = result)
+    elif subject_name == 'Maths':
+        return render_template("JEE/jee-Maths.html",data = result)
+    else:
+        return "Page Not found"
+
+
+
+@app.route('/NEET/<string:subject_name>')
+def neet_subjects(subject_name):
+
+    db = mydb.cursor()
+    db.execute(f'select bookName,className,mfgYear,sellingAmount,publicationName, urlImg, quantity, book_id from neet_books where subjectName = "{subject_name}";')
+    result = db.fetchall()
+    db.close()
+    if subject_name == 'Physics':
+        return render_template("NEET/neet-Physics.html",data = result)
+    elif subject_name == 'Chemistry':
+        return render_template("NEET/neet-Chemistry.html",data = result)
+    elif subject_name == 'Biology':
+        return render_template("NEET/neet-Biology.html",data = result)
+    else:
+        return "Page Not found"

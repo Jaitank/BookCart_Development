@@ -133,7 +133,10 @@ def Sell_books():
             mydb.commit()
             db.close()
             flash('Your Book has Been Added SuccessFully!','success')
-        return render_template('Sell_books.html', form = form)
+            return render_template('Sell_books.html', form=form)
+        else:
+            flash('Make sure you have enter correct details, like photo and Subject','danger')
+            return render_template('Sell_books.html',form=form)
     else:
         return redirect(url_for('signIn_user'))
 

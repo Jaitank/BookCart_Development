@@ -40,9 +40,13 @@ def not_logged_in(f):
 def home_page():
     db = mydb.cursor()
     db.execute(f'select bookName,className,mfgYear,sellingAmount,publicationName, urlImg, quantity, book_id from school_books limit 4;')
-    result = db.fetchall()
+    schoolResult = db.fetchall()
+    db.execute(f'select bookName,className,mfgYear,sellingAmount,publicationName, urlImg, quantity, book_id from jee_books limit 4;')
+    jeeResult = db.fetchall()
+    db.execute(f'select bookName,className,mfgYear,sellingAmount,publicationName, urlImg, quantity, book_id from neet_books limit 4;')
+    neetResult = db.fetchall()
     db.close()
-    return render_template('index.html', result = result)
+    return render_template('index.html', schoolResult = schoolResult, jeeResult =jeeResult, neetResult = neetResult)
 
 
 @app.route('/result',methods = ["GET","POST"])
@@ -50,11 +54,11 @@ def result():
     if request.method == 'POST':
         book = request.form['book']
         db = mydb.cursor()
-        db.execute(f'select bookName,className,mfgYear,sellingAmount,publicationName, urlImg, quantity, book_id from jee_books where bookName like "%{book}%";')
+        db.execute(f'select bookName,className,mfgYear,sellingAmount,publicationName, urlImg, quantity, book_id from jee_books where bookName like "%{book}%" or publicationName like "%{book}%";')
         jeeResult = db.fetchall()
-        db.execute(f'select bookName,className,mfgYear,sellingAmount,publicationName, urlImg, quantity, book_id from neet_books where bookName like "%{book}%";')
+        db.execute(f'select bookName,className,mfgYear,sellingAmount,publicationName, urlImg, quantity, book_id from neet_books where bookName like "%{book}%" or publicationName like "%{book}%";')
         neetResult = db.fetchall()
-        db.execute(f'select bookName,className,mfgYear,sellingAmount,publicationName, urlImg, quantity, book_id from school_books where bookName like "%{book}%";')
+        db.execute(f'select bookName,className,mfgYear,sellingAmount,publicationName, urlImg, quantity, book_id from school_books where bookName like "%{book}%" or publicationName like "%{book}%";')
         schoolResult = db.fetchall()
         db.close()
         return render_template('result.html', jeeResult = jeeResult, neetResult = neetResult, schoolResult = schoolResult)

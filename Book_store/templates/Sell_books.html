@@ -15,27 +15,34 @@ Sell Books
 <section class="text-gray-600 body-font">
   <form action="" method="POST" class="form-register" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
-    <div class="container px-5 py-24 mx-auto flex flex-row items-center">
+    <div class="container px-5 py-24 mx-auto flex flex-wrap items-center">
 
-      <!-- <div class="container item-centre w-1/3 border-1 border-black bg-white lg:w-3/5 md:w-1/2 md:pr-16 lg:pr-0 pr-0">
-        <h1 class="font-bold mb-3 ">Instructions :</h1>
-          <li class="mb-2">Properly giving name to book can present you in top in search</li>
-          <li class="mb-2">Book category is main factor by which you can sell in structured format of site, you be carefull while filling single bit mistake can make your book down</li>
-          <li class="mb-2">Select mfg Year very carefully, honestly so that return ni aajaye</li>
-          <li class="mb-2">Your Book image name can also affect in you searching of your product</li>
-          <li class="mb-2">Your Book image name can also affect in you searching of your product</li>
-          <li class="mb-2">Your Book image name can also affect in you searching of your product</li>
-          <li class="mb-2">Your Book image name can also affect in you searching of your product</li>
-          <li class="mb-2">Your Book image name can also affect in you searching of your product</li>
-          
+      <div class="lg:w-2/5 md:w-1/3 md:pr-16 lg:pr-0 pr-0 bg-white border-1 border-black p-5">
+         
+        <h2 class="title-font font-medium text-3xl text-gray-900">Points To focus on While addding books</h2>
+        <p class="leading-relaxed mt-4">
+          <p class="mb-2 ">Enter <b>Book Name</b>  very Correct so that it can appear on search on top.</p>
+          <p class="mb-2">
+            <span class="font-bold">Subject Name :</span>
+            <span class="text-green-600">Physics, Accounts, Biology.....(single word ) ✔️</span>
+          </p>
+          <p class="mb-2">
+            <span class="font-bold">Subject Name :</span>
+            <span class="text-red-600">Physics Jee, Accounts commerce, Biology neet ❌</span>
+          </p>
         
-      </div> -->
+          <p class="mb-2  ">Adding image rather than jpeg and jpg cannot make your book add</p>
+          
+          
+        </p>
+     
+      </div>
 
       <div
-        class="lg:w-1/2 md:w-1/2 bg-gray-100 border-1 shadow rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0 gap-10">
-        <div class="flex flex-row gap-5">
-          <!-- <h2 class="text-gray-900 text-lg font-medium title-font mb-3">ADD BOOK TO SELL</h2> -->
-          <div class="flex flex-col">
+        class="lg:w-2/5 md:w-1/2 border-1 shadow bg-gray-100 rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0">
+        
+          <h2 class="text-gray-900 text-lg font-medium title-font mb-3">ADD BOOK TO SELL</h2>
+          
 
 
             <div class=" mb-2">
@@ -75,9 +82,9 @@ Sell Books
               transition-colors duration-200 ease-in-out", placeholder= "12, 11, if year = 1,2,3,etc.")}}
             </div>
 
-          </div>
+          
 
-          <div class="flex flex-col border-l-2 px-5">
+         
 
             <div class=" mb-2">
               <label for="full-name" class="leading-7 text-sm text-gray-600 font-bold"> {{ form.mfgYear.label() }}
@@ -115,10 +122,9 @@ Sell Books
               focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1  leading-8
               transition-colors duration-200 ease-in-out", placeholder= "Quantity")}}
             </div>
-          </div>
+          
 
 
-        </div>
 
         {{ form.submit(class="text-white w-full bg-gray-600 border-0 py-2 px-8 focus:outline-none hover:bg-gray-900
         rounded

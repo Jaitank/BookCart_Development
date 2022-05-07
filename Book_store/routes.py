@@ -36,7 +36,6 @@ def not_logged_in(f):
     return wrap
 
 @app.route('/')
-@app.route('/Home')
 def home_page():
     db = mydb.cursor()
     db.execute(f'select bookName,className,mfgYear,sellingAmount,publicationName, urlImg, quantity, book_id from school_books limit 4;')
@@ -155,7 +154,7 @@ def Sell_books():
             flash('Your Book has Been Added SuccessFully!','success')
             return render_template('Sell_books.html', form=form)
         else:
-            flash('Make sure you have enter correct details, like photo and Subject','danger')
+            # flash('Make sure to enter correct details, like photo and Subject','dark')
             return render_template('Sell_books.html',form=form)
     else:
         return redirect(url_for('signIn_user'))

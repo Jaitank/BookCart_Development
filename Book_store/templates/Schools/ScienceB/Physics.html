@@ -6,11 +6,11 @@ Physics-Books
 {% endblock %}
 {% block content %}
 
-<h1 class="uppercase tracking-wide flex flex-col items-center no-underline hover:no-underline font-bold text-gray-800 text-xl mt-4"> Physics-Books</h1>
+<h1 class="uppercase tracking-wide flex flex-col items-center no-underline hover:no-underline font-bold text-gray-800 text-xl mt-4 border-b-2 p-2"> Physics-Books</h1>
 
 <section class="text-gray-600 body-font">
     <div class="container px-5 py-24 mx-auto">
-      <div class="flex flex-wrap ml-20 gap-20">
+      <div class="flex flex-wrap ml-10 gap-20">
 
         
 
@@ -27,13 +27,20 @@ Physics-Books
             <h2 class="text-gray-900 title-font text-lg font-medium">{{item[0]}}</h2>
   
             <p class="mt-1 font-bold">₹ {{item[3] }}</p>
+            <!-- <button
+                  class="px-6 py-2 transition ease-in duration-200 uppercase rounded-full hover:bg-gray-800 hover:text-white border-2 border-gray-900 focus:outline-none">Add
+            to cart</button> -->
+            
           </div>
         </a>
+        <a href="">
+          <div class=" bg-gray-300 flex justify-center border-1  p-2">ADD TO CART 🛒</div>
+        </a>
+        
           
         </div>
 
       
-
         
         {% endfor %}
 

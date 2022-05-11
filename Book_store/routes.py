@@ -188,7 +188,7 @@ def signIn_user():
                 session['uid'] = uid
                 session['s_name'] = name
                 # flash("Logged In! Successfully",'success')
-                return render_template('index.html',data = data)
+                return redirect(url_for('home_page'))
             else:
                 flash('Incorrect Password !','danger')
                 return render_template('signIn.html',form = form)
@@ -262,27 +262,34 @@ def Science_subjects(subject_name):
 
 @app.route('/sellerHistory')
 def sell_history():
-    sellerId = session['uid']
-    sellerName = session['s_name']
-    db = mydb.cursor()
-    # category = ["school_books","btech",""]
-    db.execute(f'select bookName, subjectName, className, mfgYear, sellingAmount, publicationName, urlImg from school_books where user_id = {sellerId};')
-    result = db.fetchall()
-    if result:
-        return render_template('SellerHistory.html',result =result)
+    if 'uid' in session:
+        sellerId = session['uid']
+        sellerName = session['s_name']
+        db = mydb.cursor()
+        # category = ["school_books","btech",""]
+        db.execute(f'select bookName, subjectName, className, mfgYear, sellingAmount, publicationName, urlImg from school_books where user_id = {sellerId};')
+        result = db.fetchall()
+        if result:
+            return render_template('SellerHistory.html',result =result)
+        else:
+            result1 = "0"
+            return render_template('SellerHistory.html',result = result1)
     else:
-        result1 = "0"
-        return render_template('SellerHistory.html',result = result1)
+        return "Log In First "
 
 
 @app.route('/<string:product_name_id>')
 def product_display(product_name_id):
     x = product_name_id.split("+")
     book_id = x[0]
-    used_tb = x[1]
-    db = mydb.cursor()
-    db.execute(f'select bookName, subjectName, className, mfgYear, sellingAmount, publicationName, sellername, urlImg, quantity  from {used_tb} where book_id = "{book_id}";')
-    result = db.fetchone()
+    used_tb = ''
+    result = []
+    n = len(x)
+    if n == 2:
+        used_tb = x[1]
+        db = mydb.cursor()
+        db.execute(f'select bookName, subjectName, className, mfgYear, sellingAmount, publicationName, sellername, urlImg, quantity  from {used_tb} where book_id = {book_id};')
+        result = db.fetchone()
     return render_template('PdBook_indPage.html', data = result)
 
 
@@ -321,3 +328,84 @@ def neet_subjects(subject_name):
         return render_template("NEET/neet-Biology.html",data = result)
     else:
         return "Page Not found"
+
+
+
+
+# before adding cart option we have to make some changes in our databse,
+# - streamName, Book adding date and time, Book Selling date and time, no of books available
+@app.route('/Cart')
+def fetchingCartDetails():
+    customer_id = session['uid']
+    db = mydb.cursor()
+    db.execute(f'select book_id, table_name from cart where customer_id = {customer_id}')
+    cart_values = db.fetchall()
+    cartItems = []
+    totalAmount = 0 # we will add all books sellingAmount here while fetching and then sends it to html
+    for bookAndTable in cart_values:
+        BookToFetch = bookAndTable[0]
+        tableFetch = bookAndTable[1]
+        db.execute(f'select bookName, sellingAmount, book_id, urlImg from {tableFetch} where book_id = {BookToFetch}')
+        bookDetailForCart = db.fetchone()
+
+        # adding totalAmount
+        totalAmount += bookDetailForCart[1]
+
+        # to append tableName in bookCart we typecase db result in list from tuple
+        bookCart = list(bookDetailForCart) 
+        bookCart.append(tableFetch)
+
+        # insert all values in cartItems
+        cartItems.insert(1, bookCart)
+    db.close()
+    return render_template('Cart.html', cartItems = cartItems, totalAmount = totalAmount)
+
+
+# @app.route('/Cart')
+# def mainCart(cart_values):
+#     db = mydb.cursor()
+#     customerId = session['uid']
+#     db.execute(f'select book_id, table_name from cart where customer_id = {customer_id}')
+#     cart_values = db.fetchall()
+#     db.close()
+#     return fetchingCartDetails(cart_values)
+
+    
+
+
+@app.route('/Cart/<string:product_id_tableName>')
+def addCart(product_id_tableName):
+
+    if 'uid' in session:
+        db = mydb.cursor()
+        customer_id = session['uid']
+        x = product_id_tableName.split("+")
+        n = len(x)
+        if n > 1:
+            bookid = x[0]
+            table_name = x[1]
+            db.execute(f'insert into cart(customer_id, book_id, table_name) values({customer_id}, {bookid}, "{table_name}");')
+            mydb.commit()
+        db.close()
+        return redirect(url_for('fetchingCartDetails'))
+    else:
+        return redirect(url_for('signIn_user'))
+
+
+@app.route('/deleteFromcart+<string:bookID_Name>')
+def deleteFromCart(bookID_Name):
+    customerId  = session['uid']
+    db = mydb.cursor()
+    x = bookID_Name.split('+')
+    n = len(x)
+    if n > 1:
+        bookId = x[0]
+        tableName = x[1]
+        db.execute(f'delete from cart where book_id  = {bookId} and  customer_id = {customerId} and table_name = "{tableName}"')
+        mydb.commit()
+    db.execute(f'select book_id, table_name from cart where customer_id = {customerId}')
+    cart_values = db.fetchall()
+    db.close()
+    return redirect(url_for('fetchingCartDetails'))
+
+    

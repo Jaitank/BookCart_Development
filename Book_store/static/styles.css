@@ -46,7 +46,7 @@ body {
 }
 
 #hideMeAfter5Seconds {
-    animation: hideAnimation 0s ease-in 2s;
+    animation: hideAnimation 0s ease-in 4s;
     animation-fill-mode: forwards;
   }
   

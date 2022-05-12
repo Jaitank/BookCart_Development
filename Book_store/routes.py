@@ -71,6 +71,23 @@ def jee_page():
     db.close()
     return render_template('jee.html', result = result)
 
+@app.route('/Community')
+def community():
+    return render_template('Community.html')
+
+
+@app.route('/try')
+def try_page():
+    return render_template('try.html')
+
+@app.route('/Account')
+def account():
+    userID = session['uid']
+    db = mydb.cursor()
+    db.execute(f'select username, email, urlImg, mobile_no from users where user_id = {userID}')
+    userInfo = db.fetchone()
+    return render_template('Account.html', userInfo = userInfo)
+
 
 @app.route('/Schools')
 def School_page():
@@ -219,6 +236,7 @@ def register_user():
             db.execute(f'insert into users(username, email, password) values("{form.username.data}", "{form.email_address.data}", "{form.password1.data}");')
             mydb.commit()
             db.close()
+            flash('Your Account created Successfully. LogIn To Continue..','success')
             return redirect(url_for('home_page'))
         except:
             flash("Username or Email-address is exist!",'danger')
@@ -361,15 +379,6 @@ def fetchingCartDetails():
     return render_template('Cart.html', cartItems = cartItems, totalAmount = totalAmount)
 
 
-# @app.route('/Cart')
-# def mainCart(cart_values):
-#     db = mydb.cursor()
-#     customerId = session['uid']
-#     db.execute(f'select book_id, table_name from cart where customer_id = {customer_id}')
-#     cart_values = db.fetchall()
-#     db.close()
-#     return fetchingCartDetails(cart_values)
-
     
 
 
@@ -403,8 +412,6 @@ def deleteFromCart(bookID_Name):
         tableName = x[1]
         db.execute(f'delete from cart where book_id  = {bookId} and  customer_id = {customerId} and table_name = "{tableName}"')
         mydb.commit()
-    db.execute(f'select book_id, table_name from cart where customer_id = {customerId}')
-    cart_values = db.fetchall()
     db.close()
     return redirect(url_for('fetchingCartDetails'))
 

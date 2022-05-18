@@ -48,19 +48,24 @@ def home_page():
     return render_template('index.html', schoolResult = schoolResult, jeeResult =jeeResult, neetResult = neetResult)
 
 
+def searching_diffTables(tableName, book):
+    db = mydb.cursor()
+    db.execute(f'select bookName,className,mfgYear,sellingAmount,publicationName, urlImg, quantity, book_id from {tableName} where bookName like "%{book}%" or publicationName like "%{book}%";')
+    result = db.fetchall()
+    return result
+
+
 @app.route('/result',methods = ["GET","POST"])
 def result():
     if request.method == 'POST':
         book = request.form['book']
-        db = mydb.cursor()
-        db.execute(f'select bookName,className,mfgYear,sellingAmount,publicationName, urlImg, quantity, book_id from jee_books where bookName like "%{book}%" or publicationName like "%{book}%";')
-        jeeResult = db.fetchall()
-        db.execute(f'select bookName,className,mfgYear,sellingAmount,publicationName, urlImg, quantity, book_id from neet_books where bookName like "%{book}%" or publicationName like "%{book}%";')
-        neetResult = db.fetchall()
-        db.execute(f'select bookName,className,mfgYear,sellingAmount,publicationName, urlImg, quantity, book_id from school_books where bookName like "%{book}%" or publicationName like "%{book}%";')
-        schoolResult = db.fetchall()
-        db.close()
-        return render_template('result.html', jeeResult = jeeResult, neetResult = neetResult, schoolResult = schoolResult)
+        if book != "":
+            jeeResult = searching_diffTables('jee_books', book)
+            schoolResult = searching_diffTables('school_books', book)
+            neetResult = searching_diffTables('neet_books', book)
+            return render_template('result.html', jeeResult = jeeResult, neetResult = neetResult, schoolResult = schoolResult)
+        else:
+           return redirect(url_for('home_page')) 
     return redirect(url_for('home_page'))
 
 @app.route('/JEE')
@@ -296,19 +301,20 @@ def sell_history():
         return "Log In First "
 
 
-@app.route('/<string:product_name_id>')
+@app.route('/product/<string:product_name_id>')
 def product_display(product_name_id):
     x = product_name_id.split("+")
-    book_id = x[0]
-    used_tb = ''
     result = []
-    n = len(x)
-    if n == 2:
+
+    if len(x) == 2:
+        book_id = x[0]
         used_tb = x[1]
         db = mydb.cursor()
         db.execute(f'select bookName, subjectName, className, mfgYear, sellingAmount, publicationName, sellername, urlImg, quantity  from {used_tb} where book_id = {book_id};')
         result = db.fetchone()
-    return render_template('PdBook_indPage.html', data = result)
+        return render_template('PdBook_indPage.html', data = result, table = used_tb, bookID = book_id)
+    else:
+        return "404"
 
 
 
@@ -389,8 +395,7 @@ def addCart(product_id_tableName):
         db = mydb.cursor()
         customer_id = session['uid']
         x = product_id_tableName.split("+")
-        n = len(x)
-        if n > 1:
+        if len(x) > 1:
             bookid = x[0]
             table_name = x[1]
             db.execute(f'insert into cart(customer_id, book_id, table_name) values({customer_id}, {bookid}, "{table_name}");')
@@ -406,8 +411,7 @@ def deleteFromCart(bookID_Name):
     customerId  = session['uid']
     db = mydb.cursor()
     x = bookID_Name.split('+')
-    n = len(x)
-    if n > 1:
+    if len(x) > 1:
         bookId = x[0]
         tableName = x[1]
         db.execute(f'delete from cart where book_id  = {bookId} and  customer_id = {customerId} and table_name = "{tableName}"')

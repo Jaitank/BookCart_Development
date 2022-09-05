@@ -289,14 +289,19 @@ def sell_history():
         sellerId = session['uid']
         sellerName = session['s_name']
         db = mydb.cursor()
-        # category = ["school_books","btech",""]
-        db.execute(f'select bookName, subjectName, className, mfgYear, sellingAmount, publicationName, urlImg from school_books where user_id = {sellerId};')
-        result = db.fetchall()
-        if result:
-            return render_template('SellerHistory.html',result =result)
+        db.execute(f'select bookName, subjectName, className, mfgYear, sellingAmount, publicationName, urlImg, book_id from school_books where user_id = {sellerId};')
+        resultSchool = db.fetchall()
+        db.execute(f'select bookName, subjectName, className, mfgYear, sellingAmount, publicationName, urlImg, book_id from jee_books where user_id = {sellerId};')
+        resultJee = db.fetchall()
+        db.execute(f'select bookName, subjectName, className, mfgYear, sellingAmount, publicationName, urlImg, book_id from neet_books where user_id = {sellerId};')
+        resultNeet = db.fetchall()
+        if resultSchool or resultJee or resultNeet:
+            return render_template('SellerHistory.html',resultS = resultSchool, resultJ = resultJee, resultN = resultNeet)
         else:
-            result1 = "0"
-            return render_template('SellerHistory.html',result = result1)
+            resultSchool = "0"
+            resultJee = "0"
+            resultNeet = "0"
+            return render_template('SellerHistory.html',resultS = resultSchool, resultJ = resultJee, resultN = resultNeet)
     else:
         return "Log In First "
 
@@ -418,5 +423,24 @@ def deleteFromCart(bookID_Name):
         mydb.commit()
     db.close()
     return redirect(url_for('fetchingCartDetails'))
+
+
+@app.route('/removeBook/<string:bookId_Name>')
+def removeBook(bookId_Name):
+    customerId  = session['uid']
+    db = mydb.cursor()
+    x = bookId_Name.split('+')
+    if len(x) > 1:
+        bookId = x[0]
+        tableName = x[1]
+
+        # if a seller delete its book it should delete from cart(if someone has added) and table both
+        db.execute(f'delete from cart where book_id  = {bookId} and table_name = "{tableName}"')
+        db.execute(f'delete from {tableName} where book_id = {bookId}')
+        mydb.commit()
+    db.close()
+    return redirect(url_for('sell_history'))
+
+
 
     
